@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="zh-cn">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="Generator" content="EditPlus®">
+  <meta name="Author" content="">
+  <meta name="Keywords" content="">
+  <meta name="Description" content="">
+  <title>Document</title>
+  <script type="text/javascript" src="jquery-2.1.1.js"></script>
+  <style type="text/css">
+  *{margin:0px;padding:0px;}
+
+	.box{width:520px;height:200px;margin:0 auto;display:-webkit-box;display:-moz-box;display:box;overflow:hidden;position:relative;}
+	.box img{width:520px;height:200px;}
+	.box div{width:520px;height:200px;position:relative;}
+	.box>div:nth-child(1){transition:margin-left .8s ease-in-out;}
+	.box div div{position:absolute;width:100%;height:44px;bottom:0px;left:0px;border:1px red solid;
+	background:rgba(0,0,0,0.2);}
+	.box div div p{width:75%;height:100%;
+	text-align:center;line-height:44px;overflow:hidden;text-overflow:ellipsis;
+	white-space:nowrap;margin-left:13px;color:#fff;font-family:"华文黑体";font-size:22px;}
+	/*子级ul设为绝对定位,始终在图片的顶层*/
+	.box ul{border:1px red solid;position:absolute;top:180px;right:20px;list-style-type:none;text-align:center;width:120px;}
+	.box ul>li{display:inline-block;width:8px;height:8px;cursor:pointer;border-radius:4px;}
+	
+	
+	/*切换图片时，索引背景色改变，两个class的顺序不能变*/
+	.bgli2{background-color:rgba(255,255,255,1);}
+	.bgli{background-color:red;}
+
+  </style>
+ </head>
+ <body>
+ <div class="box">
+ 
+<div><a href="#"><img src="TB1R6kvKXXXXXbyXXXXSutbFXXX.jpg"/></a><div><p>切换图片时，索引背景色改变，两个class的顺序不能变</p></div></div>
+<div><a href="#"><img src="TB1NCQOKXXXXXXzXpXXSutbFXXX.jpg"/></a><div><p>切换图片时，索引背景色改变，两个class的顺序不能变</p></div></div>
+<div><a href="#"><img src="TB1JzILKXXXXXb7XVXXvKyzTVXX-520-280.jpg"/></a><div><p>切换图片时，索引背景色改变，两个class的顺序不能变</p></div></div>
+<div><a href="#"><img src="TB1hi7FKXXXXXXCaXXXvKyzTVXX-520-280.jpg"/></a><div><p>切换图片时，索引背景色改变，两个class的顺序不能变</p></div></div>
+<div><a href="#"><img src="TB1Bg62KXXXXXcQXFXXSutbFXXX.jpg"/></a><div><p>切换图片时，索引背景色改变，两个class的顺序不能变</p></div></div>
+
+<!--轮播图片索引-->
+	<ul id="slider">
+		<li class="bgli2 bgli"></li>
+		<li class="bgli2"></li>
+		<li class="bgli2"></li>
+		<li class="bgli2"></li>
+		<li class="bgli2"></li><!--可修改-->
+	</ul>
+ </div>
+
+
+ <script type="text/javascript">
+	//图片显示索引
+	 var index=0;
+	 function run_image(){
+		
+		//先改变前一个li的背景色为绿色
+		$("#slider>li:eq("+index+")").removeClass("bgli");
+		//索引加1，显示下一幅图片
+		index=(index==4)?0:++index;
+		//显示当前图片的索引背景色为红色
+		$("#slider>li:eq("+index+")").addClass("bgli");
+		//计算做外边距偏移量
+		var margin_left=index*(-520);
+		if(index==0)
+		 {
+			$(".box>div:nth-child(1)").css("transition-duration","0s");	
+		 }else
+		 {
+			$(".box>div:nth-child(1)").css("transition-duration",".8s");
+		 }
+		//改变外边距，显示图片
+		$(".box>div:nth-child(1)").css("margin-left",margin_left+"px");	
+	 }
+	 //第一次加载页面，自动轮播图片
+	var interval=window.setInterval("run_image()",3000);
+	
+	$(document).ready(function(){
+	
+		//当鼠标进入图片，停止轮播
+		$(".box>div").mouseenter(function(){
+		
+			window.clearInterval(interval);
+		})
+		//当鼠标离开图片，开始轮播
+		$(".box>div").mouseleave(function(){
+		
+			interval=window.setInterval("run_image()",3000);
+		})
+		
+		$("#slider>li").click(function(){
+		
+			var select=$(this).text();
+			var select_int=parseInt(select)-1;
+			//先改变前一个li的背景色为绿色
+			$("#slider>li:eq("+index+")").removeClass("bgli");
+			
+			//显示当前图片的索引背景色为红色
+			$("#slider>li:eq("+select_int+")").addClass("bgli");
+			//计算做外边距偏移量
+			var margin_left=(select_int)*(-520);
+			//改变外边距，显示图片
+			$(".box>div:nth-child(1)").css("margin-left",margin_left+"px");	
+			//设置当前显示为选择值
+			index=select_int;
+		})
+
+	});
+
+	
+ </script>
+ </body>
+</html>
